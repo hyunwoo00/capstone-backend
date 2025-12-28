@@ -1,8 +1,10 @@
-![Image](https://github.com/user-attachments/assets/bd236499-b155-4c60-acff-f3d562ecf149)
+아키텍처
+----------------------------------
+<img width="1023" height="414" alt="Image" src="https://github.com/user-attachments/assets/6148089a-9ab9-44fc-9e72-ec49979b631b" />
 
+프로젝트 설명
+----------------------------------
 
-![Image](https://github.com/user-attachments/assets/6b9061e8-4223-4b40-9c2d-b9f4225f5bf8)
+<img width="1235" height="696" alt="Image" src="https://github.com/user-attachments/assets/c434ec01-4c6d-480d-8513-245f6228edc5" />
 
-![Image](https://github.com/user-attachments/assets/b9af10de-9cb6-4a4c-9b79-df36e7269a00)
-
-![Image](https://github.com/user-attachments/assets/ddd806c5-ccb4-474a-b5c5-a78a8332723d)
+<img width="1235" height="689" alt="Image" src="https://github.com/user-attachments/assets/9888cc2f-ac71-428e-8978-43868589e493" />
