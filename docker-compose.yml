@@ -1,0 +1,84 @@
+version: "3.9"  # Compose 버전
+
+services:
+  flask:  # Flask 서버
+    build: .
+    image: capstone-flask-app #빌드된 이미지
+    expose:
+    - "5001"  # 내부에서만 노출
+    depends_on: #의존관계 설정
+      - redis
+      - db
+    environment: #환경변수
+      - REDIS_HOST=${REDIS_HOST}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+  redis:  # Redis 컨테이너
+    image: redis:latest
+    ports:
+      - ${REDIS_BINDING_PORT}:${REDIS_PORT}
+    restart: always
+
+  db:  # mysql컨테이너
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - ${DB_BINDING_PORT}:${DB_PORT}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # 컨테이너 생성시 실행할 sql
+      - mysql_data:/var/lib/mysql #mysql_data를 local 저장소에 저장.
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf # 문자셋 설정
+  nginx: #리버스 프록시
+    image: nginx:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - flask
+
+  audio_worker:
+    build: .
+    command: python app/audio_worker.py
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+      - PYTHONPATH=/app
+  gpt_worker:
+    build: .
+    command: python app/gpt_worker.py
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+      - PYTHONPATH=/app
+volumes: # 위 mysql_data: 부분을 작동시키기 위해 필요함.
+  mysql_data:

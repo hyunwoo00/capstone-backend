@@ -1,0 +1,13 @@
+flask
+flask_socketio
+openai
+pymysql
+redis
+tensorflow
+tensorflow_hub
+numpy
+python-dotenv # .env 변수
+cryptography #mysql 비밀번호 암호화
+eventlet # socketIO 비동기 처리 가능
+gunicorn #wsgi서버
+Werkzeug==2.2.3
