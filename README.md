@@ -1,6 +1,6 @@
 아키텍처
 ----------------------------------
-<img width="1023" height="414" alt="Image" src="https://github.com/user-attachments/assets/6148089a-9ab9-44fc-9e72-ec49979b631b" />
+<img width="1032" height="369" alt="Image" src="https://github.com/user-attachments/assets/51d92b4d-a225-4e25-8994-453c25ea52e3" />
 
 프로젝트 설명
 ----------------------------------
